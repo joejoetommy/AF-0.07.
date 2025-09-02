@@ -29,7 +29,7 @@ const SideNav = () => {
           width={65}
           height={65}
           priority
-          className='bg-grey-100 pr-2'
+          className='bg-grey-300 pr-2'
         />
               <span
           className={`

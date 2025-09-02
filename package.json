@@ -12,17 +12,27 @@
     "format": "prettier --write . --list-different"
   },
   "dependencies": {
+    "@react-email/components": "^0.5.1",
     "classnames": "^2.3.2",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "formik": "2.4.6",
     "framer-motion": "^10.16.4",
     "next": "latest",
+    "nodemailer": "^7.0.6",
+    "nodemailer-smtp-transport": "^2.7.4",
     "react": "latest",
-    "react-dom": "latest"
+    "react-confetti": "^6.4.0",
+    "react-dom": "latest",
+    "react-toastify": "^11.0.5",
+    "zod": "3.22.4",
+    "zod-formik-adapter": "1.3.0"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
     "@iconify/react": "^4.1.1",
     "@types/node": "latest",
+    "@types/nodemailer": "^7.0.1",
+    "@types/nodemailer-smtp-transport": "^2.7.8",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@typescript-eslint/eslint-plugin": "^6.7.3",

@@ -15,7 +15,7 @@ const HomeFeed = () => {
       </div>
 
       <div className="pt-10 flex  flex-1 h-screen">
-        <ForYouPage />
+        {/* <ForYouPage /> */}
       </div>
     </div>
   );
