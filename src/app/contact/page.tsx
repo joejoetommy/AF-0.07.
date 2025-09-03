@@ -3,7 +3,7 @@ import { Separator } from '@/components/core/separator';
 import Contact from './contact';
 import FooterSection from '@/components/core/footer';
 import InformationPacks from '@/components/core/infocontact';
-import ContactForm from "@/app/contact/form";
+import ContactForm from "@/app/contact/ContactForm";
 //  Contact;   InformationPacks
 
 const MessagesPage = () => {

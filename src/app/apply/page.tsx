@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Separator } from '@/components/core/separator';
-import ContactForm from "@/app/contact/form";
+import ContactForm from "@/app/contact/ContactForm";
 import ApplicantForm from "@/app/contact/applicantform";
 
  const tabComponents = {
