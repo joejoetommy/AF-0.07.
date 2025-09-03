@@ -126,58 +126,59 @@ const ApplicantForm = () => {
     cvFileB: null,
   };
 
-  const handleSubmit = async (
-    values: FormValues,
-    {
-      setSubmitting,
-      resetForm,
-    }: {
-      setSubmitting: (isSubmitting: boolean) => void;
-      resetForm: () => void;
+const handleSubmit = async (
+  values: FormValues,
+  {
+    setSubmitting,
+    resetForm,
+  }: {
+    setSubmitting: (isSubmitting: boolean) => void;
+    resetForm: () => void;
+  }
+) => {
+  try {
+    setIsLoading(true);
+
+    // Build FormData (supports files)
+    const fd = new FormData();
+    fd.append("formIdentifier", "applicant");  // Added this line
+    fd.append("formType", values.formType);
+    fd.append("firstName", values.firstName);
+    fd.append("lastName", values.lastName);
+
+    if (values.formType === "A") {
+      if (values.cvFile) fd.append("cvFile", values.cvFile);
+    } else {
+      fd.append("address", values.address);
+      fd.append("postcode", values.postcode || "");
+      fd.append("mobile", values.mobile);
+      fd.append("email", values.email);
+      fd.append("hearAbout", values.hearAbout || "");
+      fd.append("idealJob", values.idealJob || "");
+      fd.append("qualifications", values.qualifications || "");
+      fd.append("drivingLicence", values.drivingLicence || "");
+      fd.append("appliedBefore", values.appliedBefore || "");
+      fd.append("otherInfo", values.otherInfo || "");
+      fd.append("workHistory", JSON.stringify(values.workHistory || []));
+      if (values.cvFileB) fd.append("cvFile", values.cvFileB);
     }
-  ) => {
-    try {
-      setIsLoading(true);
 
-      // Build FormData (supports files)
-      const fd = new FormData();
-      fd.append("formType", values.formType);
-      fd.append("firstName", values.firstName);
-      fd.append("lastName", values.lastName);
+    await fetch("/api/contact", {
+      method: "POST",
+      body: fd, // let the browser set Content-Type with boundary
+    });
 
-      if (values.formType === "A") {
-        if (values.cvFile) fd.append("cvFile", values.cvFile);
-      } else {
-        fd.append("address", values.address);
-        fd.append("postcode", values.postcode || "");
-        fd.append("mobile", values.mobile);
-        fd.append("email", values.email);
-        fd.append("hearAbout", values.hearAbout || "");
-        fd.append("idealJob", values.idealJob || "");
-        fd.append("qualifications", values.qualifications || "");
-        fd.append("drivingLicence", values.drivingLicence || "");
-        fd.append("appliedBefore", values.appliedBefore || "");
-        fd.append("otherInfo", values.otherInfo || "");
-        fd.append("workHistory", JSON.stringify(values.workHistory || []));
-        if (values.cvFileB) fd.append("cvFile", values.cvFileB);
-      }
-
-      await fetch("/api/contact", {
-        method: "POST",
-        body: fd, // let the browser set Content-Type with boundary
-      });
-
-      resetForm();
-      toast.success("Form submitted successfully!");
-      setShowConfetti(true);
-    } catch (error) {
-      console.error("Failed to send:", error);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
-      setIsLoading(false);
-    }
-  };
+    resetForm();
+    toast.success("Form submitted successfully!");
+    setShowConfetti(true);
+  } catch (error) {
+    console.error("Failed to send:", error);
+    toast.error("Something went wrong. Please try again.");
+  } finally {
+    setSubmitting(false);
+    setIsLoading(false);
+  }
+};
 
   const activeSchema = formType === "A" ? schemaA : schemaB;
 
@@ -192,8 +193,8 @@ const ApplicantForm = () => {
               onClick={() => setFormType("A")}
               className={`rounded-md px-4 py-2 text-sm font-medium ${
                 formType === "A"
-                  ? "bg-teal-600 text-white"
-                  : "bg-neutral-900 text-neutral-300"
+                  ? "bg-green-500 px-4 py-3 text-black font-bold"
+                  : "bg-neutral-900 text-green-500"
               }`}
             >
               Option A (Quick Apply)
@@ -203,8 +204,8 @@ const ApplicantForm = () => {
               onClick={() => setFormType("B")}
               className={`rounded-md px-4 py-2 text-sm font-medium ${
                 formType === "B"
-                  ? "bg-teal-600 text-white"
-                  : "bg-neutral-900 text-neutral-300"
+                  ? "bg-green-500 px-4 py-3 text-black font-bold"
+                  : "bg-neutral-900 text-green-500"
               }`}
             >
               Option B (Full Application)
@@ -538,7 +539,7 @@ const ApplicantForm = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="mt-2 w-16 rounded-md bg-green-500 px-4 py-3 text-black font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-70"
+                    className="mt-2 w-45 rounded-md bg-green-500 px-4 py-3 text-black font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-70"
                   >
                     Submit
                   </button>

@@ -21,38 +21,41 @@ const ContactForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const handleSubmit = async (
-    values: FormValues,
-    {
-      setSubmitting,
-      resetForm,
-    }: {
-      setSubmitting: (isSubmitting: boolean) => void;
-      resetForm: () => void;
-    }
-  ) => {
-    try {
-      setIsLoading(true);
+const handleSubmit = async (
+  values: FormValues,
+  {
+    setSubmitting,
+    resetForm,
+  }: {
+    setSubmitting: (isSubmitting: boolean) => void;
+    resetForm: () => void;
+  }
+) => {
+  try {
+    setIsLoading(true);
 
-      // Send email using your API route
-      await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
+    // Send email using your API route with form identifier
+    await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...values,
+        formIdentifier: 'contact'  // Added this line
+      }),
+    });
 
-      resetForm();
-      console.log("Email sent successfully!");
-    } catch (error) {
-      console.error("Failed to send email:", error);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
-      toast.success("Form submitted successfully!");
-      setShowConfetti(true);
-      setIsLoading(false);
-    }
-  };
+    resetForm();
+    console.log("Email sent successfully!");
+    toast.success("Form submitted successfully!");
+    setShowConfetti(true);
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    toast.error("Something went wrong. Please try again.");
+  } finally {
+    setSubmitting(false);
+    setIsLoading(false);
+  }
+};
 
   return (
     <>

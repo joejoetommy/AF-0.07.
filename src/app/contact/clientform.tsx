@@ -29,37 +29,40 @@ const ClientForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const handleSubmit = async (
-    values: FormValues,
-    {
-      setSubmitting,
-      resetForm,
-    }: {
-      setSubmitting: (isSubmitting: boolean) => void;
-      resetForm: () => void;
-    }
-  ) => {
-    try {
-      setIsLoading(true);
+const handleSubmit = async (
+  values: FormValues,
+  {
+    setSubmitting,
+    resetForm,
+  }: {
+    setSubmitting: (isSubmitting: boolean) => void;
+    resetForm: () => void;
+  }
+) => {
+  try {
+    setIsLoading(true);
 
-      await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
+    await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...values,
+        formIdentifier: 'client'  // Added this line
+      }),
+    });
 
-      resetForm();
-      console.log("Email sent successfully!");
-      toast.success("Form submitted successfully!");
-      setShowConfetti(true);
-    } catch (error) {
-      console.error("Failed to send email:", error);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
-      setIsLoading(false);
-    }
-  };
+    resetForm();
+    console.log("Email sent successfully!");
+    toast.success("Form submitted successfully!");
+    setShowConfetti(true);
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    toast.error("Something went wrong. Please try again.");
+  } finally {
+    setSubmitting(false);
+    setIsLoading(false);
+  }
+};
 
   return (
     <>
@@ -264,7 +267,7 @@ const ClientForm = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="mt-2 w-16 rounded-md bg-green-500 px-4 py-3 text-black font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-70"
+                  className="mt-2 w-45 rounded-md bg-green-500 px-4 py-3 text-black font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-70"
                 >
                   Submit
                 </button>
