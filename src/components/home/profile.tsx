@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import { TextRoll } from '@/components/core/text-roll';
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/core/button"
 import {
   Dialog,
   DialogClose,
