@@ -2,7 +2,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { TextRoll } from '@/components/core/text-roll';
-
+import { Label } from "@/components/core/label"
+import { Input } from "@/components/core/input"
 import { Button } from "@/components/core/button"
 import {
   Dialog,
@@ -17,7 +18,7 @@ import {
 
 // Static data placed directly inside the component file
 const profileData = {
-  backgroundImage: '/cow.jpg',       // must be inside /public
+  backgroundImage: '/cow.jpg',       // must be inside /public    border-borde
   profileImage: '/cowprofile.jpg',   // must be inside /public
   username: 'AgriForce',
   title: 'Developing the Agricultural workforce of tomorrow',
