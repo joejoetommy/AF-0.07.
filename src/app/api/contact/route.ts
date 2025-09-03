@@ -1,16 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { transporter, smtpEmail } from '@/utils/nodemailer';
 
-
-export async function GET(req: NextRequest) {
-  return NextResponse.json({
-    message: "Contact API is working",
-    emailConfigured: !!process.env.GOOGLE_EMAIL,
-    passwordConfigured: !!process.env.GOOGLE_PASSWORD,
-  });
-}
-
-
+// Helper to format work history for email
+const formatWorkHistory = (workHistory: any[]) => {
+  if (!workHistory || workHistory.length === 0) return 'No work history provided';
+  
+  return workHistory.map((item, index) => `
+    <div style="margin-bottom: 15px; padding: 10px; background: #f0f0f0; border-radius: 5px;">
+      <strong>Work Experience ${index + 1}:</strong><br/>
+      <strong>Period:</strong> ${item.startDate || 'N/A'} to ${item.endDate || 'Present'}<br/>
+      <strong>Company:</strong> ${item.company || 'N/A'}<br/>
+      <strong>Farm Description:</strong> ${item.farmDescription || 'N/A'}<br/>
+      <strong>Role Description:</strong> ${item.roleDescription || 'N/A'}
+    </div>
+  `).join('');
+};
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,16 +33,46 @@ export async function POST(req: NextRequest) {
     const contentType = req.headers.get('content-type') || '';
     
     let data: any = {};
+    let attachments: any[] = [];
     
-    // Handle JSON
+    // Handle both JSON and FormData
     if (contentType.includes('application/json')) {
       data = await req.json();
-      console.log('Received form data:', data);
+      console.log('Received JSON form data:', data);
+    } else if (contentType.includes('multipart/form-data')) {
+      const formData = await req.formData();
+      console.log('Processing FormData...');
+      
+      // Process FormData entries
+      for (const [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          // Handle file attachments
+          console.log(`Processing file: ${value.name}`);
+          const bytes = await value.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          attachments.push({
+            filename: value.name,
+            content: buffer,
+          });
+          data[key] = `${value.name} (attached)`;
+        } else if (key === 'workHistory') {
+          // Parse JSON stringified work history
+          try {
+            data[key] = JSON.parse(value as string);
+            console.log('Parsed work history:', data[key]);
+          } catch {
+            data[key] = [];
+          }
+        } else {
+          data[key] = value;
+        }
+      }
+      console.log('Processed form data:', { ...data, attachments: attachments.length });
     }
 
     // Determine form type and set subject
     let emailSubject = 'Website Form Submission';
-    let formType = data.formIdentifier || 'contact';
+    let formType = data.formIdentifier || 'unknown';
     
     // Set email subject based on form type
     switch (formType) {
@@ -70,6 +104,7 @@ export async function POST(req: NextRequest) {
             .value { margin-left: 10px; color: #333; }
             .message-box { background: white; padding: 15px; border-radius: 5px; margin-top: 10px; }
             .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+            .section-header { background: #e0e0e0; padding: 10px; margin: 20px 0 10px 0; border-radius: 5px; font-weight: bold; }
           </style>
         </head>
         <body>
@@ -78,30 +113,174 @@ export async function POST(req: NextRequest) {
               <h2>${emailSubject}</h2>
             </div>
             <div class="content">
-              <div class="field">
-                <span class="label">Name:</span>
-                <span class="value">${data.firstName || ''} ${data.lastName || ''}</span>
-              </div>
-              <div class="field">
-                <span class="label">Email:</span>
-                <span class="value">${data.email || ''}</span>
-              </div>
-              <div class="field">
-                <span class="label">Phone:</span>
-                <span class="value">${data.phone || 'Not provided'}</span>
-              </div>
-              <div class="field">
-                <span class="label">Subject:</span>
-                <span class="value">${data.subject || ''}</span>
-              </div>
-              <div class="field">
-                <span class="label">Message:</span>
-              </div>
-              <div class="message-box">
-                ${(data.message || '').replace(/\n/g, '<br>')}
-              </div>
+    `;
+
+    // Add form-specific content
+    if (formType === 'contact') {
+      emailHtml += `
+        <div class="field">
+          <span class="label">Name:</span>
+          <span class="value">${data.firstName || ''} ${data.lastName || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Email:</span>
+          <span class="value">${data.email || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Phone:</span>
+          <span class="value">${data.phone || 'Not provided'}</span>
+        </div>
+        <div class="field">
+          <span class="label">Subject:</span>
+          <span class="value">${data.subject || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Message:</span>
+        </div>
+        <div class="message-box">
+          ${(data.message || '').replace(/\n/g, '<br>')}
+        </div>
+      `;
+    } else if (formType === 'applicant') {
+      const isOptionA = data.formType === 'A';
+      
+      emailHtml += `
+        <div class="field">
+          <span class="label">Application Type:</span>
+          <span class="value" style="background: ${isOptionA ? '#ffd700' : '#90EE90'}; padding: 5px 10px; border-radius: 3px;">
+            Option ${data.formType || 'Unknown'} ${isOptionA ? '(Quick Apply)' : '(Full Application)'}
+          </span>
+        </div>
+        
+        <div class="section-header">Personal Information</div>
+        <div class="field">
+          <span class="label">Name:</span>
+          <span class="value">${data.firstName || ''} ${data.lastName || ''}</span>
+        </div>
+      `;
+      
+      if (isOptionA) {
+        // Option A - Quick Apply
+        if (attachments.length > 0) {
+          emailHtml += `
+            <div class="field">
+              <span class="label">CV:</span>
+              <span class="value" style="color: green;">✓ CV attached (${attachments[0].filename})</span>
+            </div>
+          `;
+        } else {
+          emailHtml += `
+            <div class="field">
+              <span class="label">CV:</span>
+              <span class="value" style="color: red;">No CV attached</span>
+            </div>
+          `;
+        }
+      } else {
+        // Option B - Full Application
+        emailHtml += `
+          <div class="field">
+            <span class="label">Address:</span>
+            <span class="value">${data.address || ''}</span>
+          </div>
+          <div class="field">
+            <span class="label">Postcode/Eircode:</span>
+            <span class="value">${data.postcode || 'Not provided'}</span>
+          </div>
+          <div class="field">
+            <span class="label">Mobile:</span>
+            <span class="value">${data.mobile || ''}</span>
+          </div>
+          <div class="field">
+            <span class="label">Email:</span>
+            <span class="value">${data.email || ''}</span>
+          </div>
+          
+          <div class="section-header">Additional Information</div>
+          <div class="field">
+            <span class="label">How they heard about us:</span>
+            <span class="value">${data.hearAbout || 'Not specified'}</span>
+          </div>
+          <div class="field">
+            <span class="label">Ideal Job:</span>
+            <div class="message-box">${(data.idealJob || 'Not specified').replace(/\n/g, '<br>')}</div>
+          </div>
+          <div class="field">
+            <span class="label">Qualifications/Certificates:</span>
+            <div class="message-box">${(data.qualifications || 'None specified').replace(/\n/g, '<br>')}</div>
+          </div>
+          <div class="field">
+            <span class="label">Full Driving Licence:</span>
+            <span class="value">${data.drivingLicence === 'yes' ? '✓ Yes' : '✗ No'}</span>
+          </div>
+          <div class="field">
+            <span class="label">Applied Before:</span>
+            <span class="value">${data.appliedBefore === 'yes' ? '✓ Yes' : '✗ No'}</span>
+          </div>
+          <div class="field">
+            <span class="label">Other Information:</span>
+            <div class="message-box">${(data.otherInfo || 'None provided').replace(/\n/g, '<br>')}</div>
+          </div>
+          
+          <div class="section-header">Work History</div>
+          ${formatWorkHistory(data.workHistory)}
+          
+          <div class="field">
+            <span class="label">CV:</span>
+            <span class="value">${attachments.length > 0 ? `✓ CV attached (${attachments[0].filename})` : 'No CV attached'}</span>
+          </div>
+        `;
+      }
+    } else if (formType === 'client') {
+      emailHtml += `
+        <div class="field">
+          <span class="label">Name:</span>
+          <span class="value">${data.firstName || ''} ${data.lastName || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Email:</span>
+          <span class="value">${data.email || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Mobile:</span>
+          <span class="value">${data.mobile || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Address:</span>
+          <span class="value">${data.address || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Postcode:</span>
+          <span class="value">${data.postcode || 'Not provided'}</span>
+        </div>
+        <div class="field">
+          <span class="label">Farm Type:</span>
+          <span class="value">${data.farmType || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Worker Type:</span>
+          <span class="value">${data.workerType || ''}</span>
+        </div>
+        <div class="field">
+          <span class="label">Vacancy Description:</span>
+        </div>
+        <div class="message-box">
+          ${(data.vacancyDescription || 'Not provided').replace(/\n/g, '<br>')}
+        </div>
+        <div class="field">
+          <span class="label">How they heard about us:</span>
+          <span class="value">${data.hearAbout || 'Not specified'}</span>
+        </div>
+        <div class="field">
+          <span class="label">Best time to talk:</span>
+          <span class="value">${data.bestTime || 'Not specified'}</span>
+        </div>
+      `;
+    }
+
+    emailHtml += `
               <div class="footer">
-                <p>This email was automatically generated from your website's contact form.</p>
+                <p>This email was automatically generated from your website's ${formType} form.</p>
                 <p>Submitted on: ${new Date().toLocaleString()}</p>
               </div>
             </div>
@@ -111,19 +290,25 @@ export async function POST(req: NextRequest) {
     `;
 
     // Prepare email options
-    const mailOptions = {
+    const mailOptions: any = {
       from: smtpEmail,
       to: smtpEmail, // Send to the same Gmail account
       subject: emailSubject,
       html: emailHtml,
     };
 
+    // Add attachments if any
+    if (attachments.length > 0) {
+      mailOptions.attachments = attachments;
+      console.log(`Adding ${attachments.length} attachment(s) to email`);
+    }
+
     console.log('Attempting to send email to:', smtpEmail);
 
     // Send email
     await transporter.sendMail(mailOptions);
     
-    console.log('Email sent successfully!');
+    console.log('Email sent successfully with subject:', emailSubject);
 
     return NextResponse.json(
       { message: 'Email sent successfully' },
@@ -141,84 +326,68 @@ export async function POST(req: NextRequest) {
   }
 }
 
+// GET endpoint for testing
+export async function GET(req: NextRequest) {
+  return NextResponse.json({
+    message: "Contact API is working",
+    emailConfigured: !!process.env.GOOGLE_EMAIL,
+    passwordConfigured: !!process.env.GOOGLE_PASSWORD,
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
 
 // import { NextRequest, NextResponse } from 'next/server';
-// import nodemailer from 'nodemailer';
-// import Mail from 'nodemailer/lib/mailer';
+// import { transporter, smtpEmail } from '@/utils/nodemailer';
 
-// // Create reusable transporter using Gmail SMTP
-// const transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: process.env.GMAIL_USER, // Your Gmail address
-//     pass: process.env.GMAIL_APP_PASSWORD, // Your Gmail App Password
-//   },
-// });
 
-// // Helper to format work history for email
-// const formatWorkHistory = (workHistory: any[]) => {
-//   if (!workHistory || workHistory.length === 0) return 'No work history provided';
-  
-//   return workHistory.map((item, index) => `
-//     Work Experience ${index + 1}:
-//     - Period: ${item.startDate || 'N/A'} to ${item.endDate || 'Present'}
-//     - Company: ${item.company || 'N/A'}
-//     - Farm Description: ${item.farmDescription || 'N/A'}
-//     - Role Description: ${item.roleDescription || 'N/A'}
-//   `).join('\n');
-// };
+// export async function GET(req: NextRequest) {
+//   return NextResponse.json({
+//     message: "Contact API is working",
+//     emailConfigured: !!process.env.GOOGLE_EMAIL,
+//     passwordConfigured: !!process.env.GOOGLE_PASSWORD,
+//   });
+// }
+
+
 
 // export async function POST(req: NextRequest) {
 //   try {
+//     // Check if environment variables are set
+//     if (!smtpEmail || !process.env.GOOGLE_PASSWORD) {
+//       console.error('Email configuration missing:', {
+//         email: smtpEmail ? 'Set' : 'Missing',
+//         password: process.env.GOOGLE_PASSWORD ? 'Set' : 'Missing'
+//       });
+//       return NextResponse.json(
+//         { error: 'Email configuration error' },
+//         { status: 500 }
+//       );
+//     }
+
 //     const contentType = req.headers.get('content-type') || '';
     
 //     let data: any = {};
-//     let attachments: Mail.Attachment[] = [];
     
-//     // Handle both JSON and FormData
+//     // Handle JSON
 //     if (contentType.includes('application/json')) {
 //       data = await req.json();
-//     } else if (contentType.includes('multipart/form-data')) {
-//       const formData = await req.formData();
-      
-//       // Process FormData entries
-//       for (const [key, value] of formData.entries()) {
-//         if (value instanceof File) {
-//           // Handle file attachments
-//           const buffer = Buffer.from(await value.arrayBuffer());
-//           attachments.push({
-//             filename: value.name,
-//             content: buffer,
-//           });
-//         } else if (key === 'workHistory') {
-//           // Parse JSON stringified work history
-//           try {
-//             data[key] = JSON.parse(value as string);
-//           } catch {
-//             data[key] = [];
-//           }
-//         } else {
-//           data[key] = value;
-//         }
-//       }
+//       console.log('Received form data:', data);
 //     }
 
 //     // Determine form type and set subject
 //     let emailSubject = 'Website Form Submission';
-//     let formType = 'unknown';
+//     let formType = data.formIdentifier || 'contact';
     
-//     // Detect form type based on fields present
-//     if (data.formIdentifier) {
-//       // If form explicitly sends identifier
-//       formType = data.formIdentifier;
-//     } else if (data.farmType && data.workerType && data.vacancyDescription !== undefined) {
-//       formType = 'client';
-//     } else if (data.formType === 'A' || data.formType === 'B' || data.workHistory) {
-//       formType = 'applicant';
-//     } else if (data.subject && data.message) {
-//       formType = 'contact';
-//     }
-
 //     // Set email subject based on form type
 //     switch (formType) {
 //       case 'contact':
@@ -234,7 +403,7 @@ export async function POST(req: NextRequest) {
 //         emailSubject = 'Website Form Submission';
 //     }
 
-//     // Build email content based on form type
+//     // Build email content
 //     let emailHtml = `
 //       <!DOCTYPE html>
 //       <html>
@@ -247,6 +416,7 @@ export async function POST(req: NextRequest) {
 //             .field { margin-bottom: 15px; }
 //             .label { font-weight: bold; color: #555; }
 //             .value { margin-left: 10px; color: #333; }
+//             .message-box { background: white; padding: 15px; border-radius: 5px; margin-top: 10px; }
 //             .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
 //           </style>
 //         </head>
@@ -256,174 +426,66 @@ export async function POST(req: NextRequest) {
 //               <h2>${emailSubject}</h2>
 //             </div>
 //             <div class="content">
-//     `;
-
-//     // Add form-specific content
-//     if (formType === 'contact') {
-//       emailHtml += `
-//         <div class="field"><span class="label">Name:</span> <span class="value">${data.firstName || ''} ${data.lastName || ''}</span></div>
-//         <div class="field"><span class="label">Email:</span> <span class="value">${data.email || ''}</span></div>
-//         <div class="field"><span class="label">Phone:</span> <span class="value">${data.phone || 'Not provided'}</span></div>
-//         <div class="field"><span class="label">Subject:</span> <span class="value">${data.subject || ''}</span></div>
-//         <div class="field"><span class="label">Message:</span></div>
-//         <div class="value" style="background: white; padding: 10px; border-radius: 3px; margin-top: 5px;">
-//           ${(data.message || '').replace(/\n/g, '<br>')}
-//         </div>
-//       `;
-//     } else if (formType === 'applicant') {
-//       const isOptionA = data.formType === 'A';
-//       emailHtml += `
-//         <div class="field"><span class="label">Application Type:</span> <span class="value">Option ${data.formType || 'Unknown'} ${isOptionA ? '(Quick Apply)' : '(Full Application)'}</span></div>
-//         <div class="field"><span class="label">Name:</span> <span class="value">${data.firstName || ''} ${data.lastName || ''}</span></div>
-//       `;
-      
-//       if (!isOptionA) {
-//         emailHtml += `
-//           <div class="field"><span class="label">Address:</span> <span class="value">${data.address || ''}</span></div>
-//           <div class="field"><span class="label">Postcode:</span> <span class="value">${data.postcode || 'Not provided'}</span></div>
-//           <div class="field"><span class="label">Mobile:</span> <span class="value">${data.mobile || ''}</span></div>
-//           <div class="field"><span class="label">Email:</span> <span class="value">${data.email || ''}</span></div>
-//           <div class="field"><span class="label">How they heard about us:</span> <span class="value">${data.hearAbout || 'Not specified'}</span></div>
-//           <div class="field"><span class="label">Ideal Job:</span> <span class="value">${data.idealJob || 'Not specified'}</span></div>
-//           <div class="field"><span class="label">Qualifications:</span> <span class="value">${data.qualifications || 'None specified'}</span></div>
-//           <div class="field"><span class="label">Driving Licence:</span> <span class="value">${data.drivingLicence === 'yes' ? 'Yes' : 'No'}</span></div>
-//           <div class="field"><span class="label">Applied Before:</span> <span class="value">${data.appliedBefore === 'yes' ? 'Yes' : 'No'}</span></div>
-//           <div class="field"><span class="label">Other Information:</span> <span class="value">${data.otherInfo || 'None'}</span></div>
-//           <div class="field"><span class="label">Work History:</span></div>
-//           <div class="value" style="background: white; padding: 10px; border-radius: 3px; margin-top: 5px;">
-//             <pre>${formatWorkHistory(data.workHistory)}</pre>
-//           </div>
-//         `;
-//       }
-      
-//       if (attachments.length > 0) {
-//         emailHtml += `<div class="field"><span class="label">CV Attached:</span> <span class="value">Yes (see attachment)</span></div>`;
-//       }
-//     } else if (formType === 'client') {
-//       emailHtml += `
-//         <div class="field"><span class="label">Name:</span> <span class="value">${data.firstName || ''} ${data.lastName || ''}</span></div>
-//         <div class="field"><span class="label">Email:</span> <span class="value">${data.email || ''}</span></div>
-//         <div class="field"><span class="label">Mobile:</span> <span class="value">${data.mobile || ''}</span></div>
-//         <div class="field"><span class="label">Address:</span> <span class="value">${data.address || ''}</span></div>
-//         <div class="field"><span class="label">Postcode:</span> <span class="value">${data.postcode || 'Not provided'}</span></div>
-//         <div class="field"><span class="label">Farm Type:</span> <span class="value">${data.farmType || ''}</span></div>
-//         <div class="field"><span class="label">Worker Type:</span> <span class="value">${data.workerType || ''}</span></div>
-//         <div class="field"><span class="label">Vacancy Description:</span></div>
-//         <div class="value" style="background: white; padding: 10px; border-radius: 3px; margin-top: 5px;">
-//           ${(data.vacancyDescription || 'Not provided').replace(/\n/g, '<br>')}
-//         </div>
-//         <div class="field"><span class="label">How they heard about us:</span> <span class="value">${data.hearAbout || 'Not specified'}</span></div>
-//         <div class="field"><span class="label">Best time to talk:</span> <span class="value">${data.bestTime || 'Not specified'}</span></div>
-//       `;
-//     }
-
-//     emailHtml += `
-//             <div class="footer">
-//               <p>This email was automatically generated from your website's ${formType} form.</p>
-//               <p>Submitted on: ${new Date().toLocaleString()}</p>
+//               <div class="field">
+//                 <span class="label">Name:</span>
+//                 <span class="value">${data.firstName || ''} ${data.lastName || ''}</span>
+//               </div>
+//               <div class="field">
+//                 <span class="label">Email:</span>
+//                 <span class="value">${data.email || ''}</span>
+//               </div>
+//               <div class="field">
+//                 <span class="label">Phone:</span>
+//                 <span class="value">${data.phone || 'Not provided'}</span>
+//               </div>
+//               <div class="field">
+//                 <span class="label">Subject:</span>
+//                 <span class="value">${data.subject || ''}</span>
+//               </div>
+//               <div class="field">
+//                 <span class="label">Message:</span>
+//               </div>
+//               <div class="message-box">
+//                 ${(data.message || '').replace(/\n/g, '<br>')}
+//               </div>
+//               <div class="footer">
+//                 <p>This email was automatically generated from your website's contact form.</p>
+//                 <p>Submitted on: ${new Date().toLocaleString()}</p>
+//               </div>
 //             </div>
 //           </div>
-//         </div>
-//       </body>
-//     </html>
+//         </body>
+//       </html>
 //     `;
 
 //     // Prepare email options
-//     const mailOptions: Mail.Options = {
-//       from: process.env.GMAIL_USER,
-//       to: process.env.GMAIL_USER, // Send to the same Gmail account
+//     const mailOptions = {
+//       from: smtpEmail,
+//       to: smtpEmail, // Send to the same Gmail account
 //       subject: emailSubject,
 //       html: emailHtml,
-//       attachments: attachments.length > 0 ? attachments : undefined,
 //     };
+
+//     console.log('Attempting to send email to:', smtpEmail);
 
 //     // Send email
 //     await transporter.sendMail(mailOptions);
+    
+//     console.log('Email sent successfully!');
 
 //     return NextResponse.json(
 //       { message: 'Email sent successfully' },
 //       { status: 200 }
 //     );
-//   } catch (error) {
+//   } catch (error: any) {
 //     console.error('Error sending email:', error);
 //     return NextResponse.json(
-//       { error: 'Failed to send email' },
+//       { 
+//         error: 'Failed to send email',
+//         details: error.message 
+//       },
 //       { status: 500 }
 //     );
 //   }
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { NextRequest, NextResponse } from "next/server";
-
-// import { render } from "@react-email/components";
-
-// import { transporter, smtpEmail } from "@/utils/nodemailer";
-
-// import { Email } from "@/app/contact/email";
-
-// export async function POST(req: NextRequest, res: NextResponse) {
-//   const body = await req.json();
-//   const { name, email, message } = body;
-
-//   const emailHtml = render(
-//     <Email name={name} email={email} message={message} />
-//   );
-
-//   const options = {
-//     from: smtpEmail,
-//     to: smtpEmail,
-//     subject: "New Form Submission",
-//     html: emailHtml,
-//   };
-
-//   try {
-//     // Send email using the transporter
-//     await transporter.sendMail(options);
-//   } catch (error) {
-//     console.error("Failed to send email:", error);
-//   }
-//   return new Response("OK");
-// }

@@ -1,101 +1,85 @@
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+"use client";
 
-          import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import React, { useState } from "react";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import { z } from "zod";
+import { ToastContainer, toast } from "react-toastify";
+import Confetti from "react-confetti";
+import "react-toastify/dist/ReactToastify.css"; // ADD THIS IMPORT!
 
-export function DialogDemo() {
-  return (
-    <Dialog>
+// ... rest of your ApplicantForm component code remains the same
 
-        <DialogTrigger asChild>
-          <Button variant="outline">Open Dialog</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle> {title}</DialogTitle>
-            <DialogDescription>
-{description}
-            </DialogDescription>
-          </DialogHeader>
+// Also update the handleSubmit function to handle errors better:
+const handleSubmit = async (
+  values: FormValues,
+  {
+    setSubmitting,
+    resetForm,
+  }: {
+    setSubmitting: (isSubmitting: boolean) => void;
+    resetForm: () => void;
+  }
+) => {
+  try {
+    setIsLoading(true);
 
-export function AccordionDemo() {
-  return (
-    <Accordion
-      type="single"
-      collapsible
-      className="w-full"
-      defaultValue="item-1"
-    >
-      <AccordionItem value="item-1">
-        <AccordionTrigger>Product Information</AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-4 text-balance">
-          <p>
-            Our flagship product combines cutting-edge technology with sleek
-            design. Built with premium materials, it offers unparalleled
-            performance and reliability.
-          </p>
-          <p>
-            Key features include advanced processing capabilities, and an
-            intuitive user interface designed for both beginners and experts.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger>Shipping Details</AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-4 text-balance">
-          <p>
-            We offer worldwide shipping through trusted courier partners.
-            Standard delivery takes 3-5 business days, while express shipping
-            ensures delivery within 1-2 business days.
-          </p>
-          <p>
-            All orders are carefully packaged and fully insured. Track your
-            shipment in real-time through our dedicated tracking portal.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-3">
-        <AccordionTrigger>Return Policy</AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-4 text-balance">
-          <p>
-            We stand behind our products with a comprehensive 30-day return
-            policy. If you&apos;re not completely satisfied, simply return the
-            item in its original condition.
-          </p>
-          <p>
-            Our hassle-free return process includes free return shipping and
-            full refunds processed within 48 hours of receiving the returned
-            item.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  )
-}
+    // Build FormData (supports files)
+    const fd = new FormData();
+    fd.append("formIdentifier", "applicant");
+    fd.append("formType", values.formType);
+    fd.append("firstName", values.firstName);
+    fd.append("lastName", values.lastName);
 
+    if (values.formType === "A") {
+      if (values.cvFile) {
+        fd.append("cvFile", values.cvFile);
+        console.log("Attaching CV file:", values.cvFile.name);
+      }
+    } else {
+      fd.append("address", values.address);
+      fd.append("postcode", values.postcode || "");
+      fd.append("mobile", values.mobile);
+      fd.append("email", values.email);
+      fd.append("hearAbout", values.hearAbout || "");
+      fd.append("idealJob", values.idealJob || "");
+      fd.append("qualifications", values.qualifications || "");
+      fd.append("drivingLicence", values.drivingLicence || "");
+      fd.append("appliedBefore", values.appliedBefore || "");
+      fd.append("otherInfo", values.otherInfo || "");
+      fd.append("workHistory", JSON.stringify(values.workHistory || []));
+      if (values.cvFileB) {
+        fd.append("cvFile", values.cvFileB);
+        console.log("Attaching CV file:", values.cvFileB.name);
+      }
+    }
 
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Close</Button>
-            </DialogClose>
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      body: fd, // let the browser set Content-Type with boundary
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Form submitted successfully:", data);
+
+    resetForm();
+    toast.success("Application submitted successfully!");
+    setShowConfetti(true);
     
-          </DialogFooter>
-        </DialogContent>
- 
-    </Dialog>
-  )
-}
+    // Hide confetti after 5 seconds
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 5000);
+    
+  } catch (error) {
+    console.error("Failed to send:", error);
+    toast.error("Something went wrong. Please try again.");
+  } finally {
+    setSubmitting(false);
+    setIsLoading(false);
+  }
+};

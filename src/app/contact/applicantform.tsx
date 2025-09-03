@@ -6,6 +6,7 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
 import { ToastContainer, toast } from "react-toastify";
 import Confetti from "react-confetti";
+import "react-toastify/dist/ReactToastify.css";
 
 type WorkItem = {
   startDate: string;
@@ -171,6 +172,11 @@ const handleSubmit = async (
     resetForm();
     toast.success("Form submitted successfully!");
     setShowConfetti(true);
+    
+        setTimeout(() => {
+      setShowConfetti(false);
+    }, 5000);
+
   } catch (error) {
     console.error("Failed to send:", error);
     toast.error("Something went wrong. Please try again.");
