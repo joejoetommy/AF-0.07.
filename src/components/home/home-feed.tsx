@@ -2,6 +2,7 @@ import React from 'react';
 
 import FollowingPage from './following';
 import ForYouPage from './for-you';
+import Profile from './profile';
 
 const HomeFeed = () => {
   // const framer = useTabs(hookProps);
@@ -16,6 +17,7 @@ const HomeFeed = () => {
 
       <div className="pt-10 flex  flex-1 h-screen">
         {/* <ForYouPage /> */}
+        <Profile />
       </div>
     </div>
   );
