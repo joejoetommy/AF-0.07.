@@ -79,6 +79,8 @@ export default function InformationPacks() {
         ))}
       </div>
     </div>
+
+    
   </div>
 </div>
 
