@@ -172,10 +172,10 @@ const handleSubmit = async (
     resetForm();
     toast.success("Form submitted successfully!");
     setShowConfetti(true);
-    
+
         setTimeout(() => {
       setShowConfetti(false);
-    }, 5000);
+    }, 2000);
 
   } catch (error) {
     console.error("Failed to send:", error);
