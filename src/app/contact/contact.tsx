@@ -17,7 +17,8 @@ const Contact = () => {
         <div className="lg:w-1/2 md:w-2/3 mx-auto">
           <div className="flex flex-wrap -m-2">
             <ContactForm />
-            <div className="p-2 w-full pt-8 mt-8 border-t border-gray-200 text-center">
+                        <a className="text-indigo-500">example@email.com</a>
+            {/* <div className="p-2 w-full pt-8 mt-8 border-t border-gray-200 text-center">
               <a className="text-indigo-500">example@email.com</a>
               <p className="leading-normal my-5">
                 49 Smith St.
@@ -83,11 +84,12 @@ const Contact = () => {
                   </svg>
                 </a>
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
     </section>
+    
   );
 };
 
