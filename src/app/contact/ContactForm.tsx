@@ -55,10 +55,10 @@ const ContactForm = () => {
       toast.success("Form submitted successfully!");
       setShowConfetti(true);
       
-      // Hide confetti after 5 seconds
+      // Hide confetti after 2 seconds
       setTimeout(() => {
         setShowConfetti(false);
-      }, 5000);
+      }, 2000);
       
     } catch (error) {
       console.error("Failed to send email:", error);

@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { Separator } from '@/components/core/separator';
-import ContactForm from "@/app/contact/ContactForm";
+import ClientForm from "@/app/contact/clientform";
 import ApplicantForm from "@/app/contact/applicantform";
 
  const tabComponents = {
     Wallet:  <ApplicantForm  />,
-    WalletApp: <ContactForm  />,
+    WalletApp: <ClientForm  />,
 
   };
 
