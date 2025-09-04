@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { TextRoll } from '@/components/core/text-roll';
 import { Button } from '@/components/core/button';
@@ -8,6 +8,7 @@ import FooterSection from '@/components/core/footer';
 import InformationPacks from '@/components/core/info';
 import { Separator } from '@/components/core/separator';
 import LabelIndicatorCarousel from '@/components/core/carousel';
+import { Skeleton } from '@/components/core/skeleton';
 import {
   Dialog,
   DialogClose,
@@ -30,28 +31,47 @@ const profileData = {
 };
 
 const Profile: React.FC = () => {
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+
   return (
     <div className="container mx-auto p-1">
    
       <div className="flex justify-center mb-8">
  
         <div className="relative h-64 w-full">
+          {/* Background Image Skeleton */}
+          {!backgroundLoaded && (
+            <Skeleton className="absolute inset-0 rounded w-full h-full" />
+          )}
+          
           <Image
             src={profileData.backgroundImage}
             alt="Background Image"
             fill
-            className="rounded w-full h-full object-cover"
+            className={`rounded w-full h-full object-cover transition-opacity duration-500 ${
+              backgroundLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
             priority
+            onLoad={() => setBackgroundLoaded(true)}
           />
 
           <div className="absolute right-0 pr-6 transform bottom-[-64px]">
-            <div className="border-4 border-white rounded-full w-32 h-32 overflow-hidden">
+            <div className="border-4 border-white rounded-full w-32 h-32 overflow-hidden relative">
+              {/* Profile Image Skeleton */}
+              {!profileLoaded && (
+                <Skeleton className="absolute inset-0 rounded-full w-full h-full" />
+              )}
+              
               <Image
                 src={profileData.profileImage}
                 alt="Profile"
                 width={128}
                 height={128}
-                className="w-32 h-32 object-cover"
+                className={`w-32 h-32 object-cover transition-opacity duration-500 ${
+                  profileLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+                onLoad={() => setProfileLoaded(true)}
               />
             </div>
           </div>
@@ -125,4 +145,3 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
-
