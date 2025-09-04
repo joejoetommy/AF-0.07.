@@ -17,7 +17,7 @@ import FooterSection from '@/components/core/footer';
 
 const NotificationsPage = () => {
 
-   const [activeTab, setActiveTab] = useState<TabType>('WalletApp');
+   const [activeTab, setActiveTab] = useState<TabType>('ClientForm');
   return (
     <div className="flex flex-col pt-4 sm:ml-[120px] md:ml-[250px] sm:border-r sm:border-zinc-700 pb-20 min-h-screen">
       <span className="px-8 mt-10  pb-5 font-bold text-3xl">Apply</span>
