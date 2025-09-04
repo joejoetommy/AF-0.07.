@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { transporter, smtpEmail } from '@/utils/nodemailer';
 
-// --- Safe dev-only logger & helpers ---
-const isDev = process.env.NODE_ENV === 'development';
-const devLog = (...args: any[]) => {
-  if (isDev) console.log(...args);
-};
-const keysOnly = (obj: Record<string, any>) =>
-  Object.keys(obj || {}).sort();
-
 // Helper to format work history for email
 const formatWorkHistory = (workHistory: any[]) => {
   if (!workHistory || workHistory.length === 0) return 'No work history provided';
@@ -26,7 +18,7 @@ const formatWorkHistory = (workHistory: any[]) => {
 
 export async function POST(req: NextRequest) {
   try {
-    // Check if environment variables are set (do NOT print actual values)
+    // Check if environment variables are set
     if (!smtpEmail || !process.env.GOOGLE_PASSWORD) {
       console.error('Email configuration missing:', {
         email: smtpEmail ? 'Set' : 'Missing',
@@ -46,17 +38,16 @@ export async function POST(req: NextRequest) {
     // Handle both JSON and FormData
     if (contentType.includes('application/json')) {
       data = await req.json();
-      // Dev-only, and only log keys (not values)
-      devLog('Received JSON form data keys:', keysOnly(data));
+      console.log('Received JSON form data:', data);
     } else if (contentType.includes('multipart/form-data')) {
       const formData = await req.formData();
-      devLog('Processing FormData...');
-
+      console.log('Processing FormData...');
+      
       // Process FormData entries
       for (const [key, value] of formData.entries()) {
         if (value instanceof File) {
           // Handle file attachments
-          devLog(`Processing file (name only): ${value.name}`);
+          console.log(`Processing file: ${value.name}`);
           const bytes = await value.arrayBuffer();
           const buffer = Buffer.from(bytes);
           attachments.push({
@@ -68,7 +59,7 @@ export async function POST(req: NextRequest) {
           // Parse JSON stringified work history
           try {
             data[key] = JSON.parse(value as string);
-            devLog('Parsed work history count:', Array.isArray(data[key]) ? data[key].length : 0);
+            console.log('Parsed work history:', data[key]);
           } catch {
             data[key] = [];
           }
@@ -76,7 +67,7 @@ export async function POST(req: NextRequest) {
           data[key] = value;
         }
       }
-      devLog('Processed form data keys:', { keys: keysOnly(data), attachmentCount: attachments.length });
+      console.log('Processed form data:', { ...data, attachments: attachments.length });
     }
 
     // Determine form type and set subject
@@ -309,27 +300,26 @@ export async function POST(req: NextRequest) {
     // Add attachments if any
     if (attachments.length > 0) {
       mailOptions.attachments = attachments;
-      devLog(`Adding ${attachments.length} attachment(s) to email`);
+      console.log(`Adding ${attachments.length} attachment(s) to email`);
     }
 
-    devLog('Attempting to send email to configured smtpEmail (not printing address in prod).');
+    console.log('Attempting to send email to:', smtpEmail);
 
     // Send email
     await transporter.sendMail(mailOptions);
     
-    devLog('Email sent successfully with subject:', emailSubject);
+    console.log('Email sent successfully with subject:', emailSubject);
 
     return NextResponse.json(
       { message: 'Email sent successfully' },
       { status: 200 }
     );
   } catch (error: any) {
-    // Keep error logs, but avoid dumping full objects that might contain sensitive data
-    console.error('Error sending email:', error?.message || error);
+    console.error('Error sending email:', error);
     return NextResponse.json(
       { 
         error: 'Failed to send email',
-        details: isDev ? (error?.message || 'Unknown error') : undefined
+        details: error.message 
       },
       { status: 500 }
     );
@@ -344,6 +334,8 @@ export async function GET(req: NextRequest) {
     passwordConfigured: !!process.env.GOOGLE_PASSWORD,
   });
 }
+
+
 
 
 
