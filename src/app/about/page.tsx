@@ -2,7 +2,7 @@ import React from 'react';
 import { Separator } from '@/components/core/separator';
 import FooterSection from '@/components/core/footer';
 import InformationPacks from '@/components/core/infoabout';
-// import { MouseFollowCaption } from '@/components/core/hooverimage';
+
 
 const ExplorePage = () => {
   return (
@@ -11,7 +11,7 @@ const ExplorePage = () => {
             <Separator/>
 
 
-{/* <MouseFollowCaption/> */}
+
       <div className="mt-1 mb-1">
         <InformationPacks />
       </div>

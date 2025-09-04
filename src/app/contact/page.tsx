@@ -1,10 +1,10 @@
 import React from 'react';
 import { Separator } from '@/components/core/separator';
-import Contact from './contact';
+
 import FooterSection from '@/components/core/footer';
 import InformationPacks from '@/components/core/infocontact';
 import ContactForm from "@/app/contact/ContactForm";
-//  Contact;   InformationPacks
+
 
 const MessagesPage = () => {
   return (
@@ -13,7 +13,7 @@ const MessagesPage = () => {
               <Separator/>
 
 <InformationPacks/>
-{/* <Contact/> */}
+
 <div className="mb-50">
   <ContactForm  />
 </div>

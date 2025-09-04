@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Separator } from '@/components/core/separator';
 import ClientForm from "@/app/contact/clientform";
 import ApplicantForm from "@/app/contact/applicantform";
+import FooterSection from '@/components/core/footer';
+
 
  const tabComponents = {
     Wallet:  <ApplicantForm  />,
@@ -57,7 +59,7 @@ const NotificationsPage = () => {
 
 
 
-
+<FooterSection />
     </div>
   );
 };

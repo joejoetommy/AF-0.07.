@@ -140,9 +140,9 @@ const handleSubmit = async (
   try {
     setIsLoading(true);
 
-    // Build FormData (supports files)
+
     const fd = new FormData();
-    fd.append("formIdentifier", "applicant");  // Added this line
+    fd.append("formIdentifier", "applicant"); 
     fd.append("formType", values.formType);
     fd.append("firstName", values.firstName);
     fd.append("lastName", values.lastName);

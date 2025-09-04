@@ -18,7 +18,7 @@ import {
   DialogTrigger,
 } from '@/components/core/dialog';
 
-// Static data placed directly inside the component file
+
 const profileData = {
   backgroundImage: '/cow.jpg', // must be inside /public
   profileImage: '/cowprofile.jpg', // must be inside /public
@@ -32,9 +32,9 @@ const profileData = {
 const Profile: React.FC = () => {
   return (
     <div className="container mx-auto p-1">
-      {/* Background + Profile Image */}
+   
       <div className="flex justify-center mb-8">
-        {/* 2rem bottom margin here */}
+ 
         <div className="relative h-64 w-full">
           <Image
             src={profileData.backgroundImage}
@@ -44,7 +44,6 @@ const Profile: React.FC = () => {
             priority
           />
 
-          {/* Profile avatar */}
           <div className="absolute right-0 pr-6 transform bottom-[-64px]">
             <div className="border-4 border-white rounded-full w-32 h-32 overflow-hidden">
               <Image
@@ -59,7 +58,7 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
-      {/* Username (kept lightweight, no extra vertical space) */}
+  
       <div className="relative w-full flex items-center">
         <div className="absolute left-2 pl-5 flex flex-col space-y-2">
           <TextRoll className="text-xl font-bold pt-8 text-green-500 dark:text-white">
@@ -68,9 +67,8 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
-      {/* ===== Summary section (2rem below avatar) ===== */}
       <div className="relative mt-8 px-6 sm:px-12 lg:px-16">
-        {/* subtle overlay; does not add extra height */}
+     
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gray-900/10" />
 
         <div className="relative mx-auto max-w-3xl flex flex-col items-center text-center py-8">
@@ -109,17 +107,17 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
-      {/* ===== Carousel (tight spacing) ===== */}
+
       <div className="mt-8 mb-1">
         <LabelIndicatorCarousel />
       </div>
 
-      {/* ===== Information section (reduced spacing) ===== */}
+
       <div className="mt-1 mb-1">
         <InformationPacks />
       </div>
 
-      {/* Footer */}
+    
       <Separator/>
       <FooterSection />
     </div>

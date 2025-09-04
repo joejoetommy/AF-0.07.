@@ -28,16 +28,7 @@ const features = [
     description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
     icon: ShieldCheckIcon,
   },
-//   {
-//     name: 'Powerful API',
-//     description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-//     icon: CogIcon,
-//   },
-//   {
-//     name: 'Database Backups',
-//     description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-//     icon: ServerIcon,
-//   },
+
 ]
 
 export default function InformationPacks() {
