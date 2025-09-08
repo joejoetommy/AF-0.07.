@@ -8,6 +8,8 @@ import FooterSection from '@/components/core/footer';
 import InformationPacks from '@/components/core/info';
 import { Separator } from '@/components/core/separator';
 import LabelIndicatorCarousel from '@/components/core/carousel';
+// ProfileLinks  
+import ProfileLinks from '@/components/home/links';
 import { Skeleton } from '@/components/core/skeleton';
 import {
   Dialog,
@@ -27,7 +29,7 @@ const profileData = {
   title: 'Developing the Agricultural workforce of tomorrow',
   mission:
     'Advancing the frontiers of artificial intelligence through ethical research and practical applications. Committed to making AI accessible and beneficial for all while ensuring responsible development.',
-  bio: 'Building the agricultural workforce of tomorrow through innovative training, sustainable practices, and community engagement. Empowering farmers with the skills and knowledge to thrive in a rapidly evolving industry.',
+  bio: 'Agri Force is a dairy recruitment company specialising in connecting farmers to permanent staff. Our mission is to bridge the gap between dedicated dairy farmers and skilled professionals, providing seamless recruitment solutions that simplify the hiring process. We aim to empower busy employers by connecting them with proven and experienced dairy workers and farm managers who share a passion for dairy farming. Our commitment is to enhance operational efficiency in the dairy industry, ensuring that every farmer has the support they need tk thrive in an increasingly demanding environment. Together, we cultivate a community of excellence in the dairy industry.',
 };
 
 const Profile: React.FC = () => {
@@ -81,9 +83,9 @@ const Profile: React.FC = () => {
   
       <div className="relative w-full flex items-center">
         <div className="absolute left-2 pl-5 flex flex-col space-y-2">
-          <TextRoll className="text-xl font-bold pt-8 text-green-500 dark:text-white">
+          {/* <TextRoll className="text-xl font-bold pt-8 text-green-500 dark:text-white">
             {profileData.username}
-          </TextRoll>
+          </TextRoll> */}
         </div>
       </div>
 
@@ -93,17 +95,26 @@ const Profile: React.FC = () => {
 
         <div className="relative mx-auto max-w-3xl flex flex-col items-center text-center py-8">
           <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            <TextRoll>Long-term thinking</TextRoll>
+            <TextRoll>Agri Force</TextRoll>
           </h2>
-          <p className="mt-3 text-xl text-white">{profileData.bio}</p>
+          {/* <p className="mt-3 text-xl text-white">{profileData.bio}</p> */}
+                  {/* <h2 className="text-xs font-semibold uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
+          Agri Force
+        </h2>
+        <p className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
+          The Employment you need
+        </p>
+        <p className="mx-auto mt-5 max-w-prose text-xl text-zinc-700 dark:text-zinc-300">
+          Bridging the gap between dedicated dairy farmers and skilled professionals
+        </p> */}
 
           <Dialog>
             <form>
-              <DialogTrigger asChild>
+              {/* <DialogTrigger asChild>
                 <Button className="mt-6 px-10 py-2" variant="outline">
                   Our Story
                 </Button>
-              </DialogTrigger>
+              </DialogTrigger> */}
 
               <DialogContent className="bg-black sm:max-w-[425px]">
                 <DialogHeader>
@@ -128,13 +139,16 @@ const Profile: React.FC = () => {
       </div>
 
 
-      <div className="mt-8 mb-1">
-        <LabelIndicatorCarousel />
+      <div className="mt-1 mb-1">
+        <ProfileLinks />
       </div>
-
 
       <div className="mt-1 mb-1">
         <InformationPacks />
+      </div>
+      
+      <div className="mt-8 mb-1">
+        <LabelIndicatorCarousel />
       </div>
 
     

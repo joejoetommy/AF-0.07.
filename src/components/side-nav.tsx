@@ -65,46 +65,46 @@ const SideNav = () => {
         {/* <span className='h-2 w-2 rounded-full bg-sky-500 absolute top-3 right-[16px] md:right-[100px]'></span> */}
       </Link>
       <Link
-        href="/about"
+        href="/candidate"
         className={`flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10 ${
           isExploreActive ? 'border-2 border-green-600' : ''
         }`}
       >
         {isExploreActive ? (
           <Icon
-            icon="uil:search"
+            icon="pepicons-pencil:cv-circle-filled"
             width="38"
             height="38"
             className="stroke-current stroke-5"
           />
         ) : (
-          <Icon icon="uil:search" width="38" height="38" />
+          <Icon icon="pepicons-print:cv" width="38" height="38" />
         )}
         <span
           className={`text-2xl pt-2 hidden md:flex ${
             isExploreActive ? 'font-bold' : ''
           }`}
         >
-          About
+          Candidate
         </span>
       </Link>
       <Link
-        href="/apply"
+        href="/client"
         className={`flex flex-row space-x-4 items-center px-4 py-3 rounded-full duration-200 hover:bg-white/10 ${
           isNotificationsActive ? 'border-2 border-green-600' : ''
         }`}
       >
         {isNotificationsActive ? (
-          <Icon icon="ph:plus-fill" width="38" height="38" />
+          <Icon icon="streamline-ultimate:human-resources-businessman-bold" width="38" height="38" />
         ) : (
-          <Icon icon="rivet-icons:plus" width="38" height="38" />
+          <Icon icon="streamline-ultimate:human-resources-businessman" width="38" height="38" />
         )}
         <span
           className={`text-2xl pt-2 hidden md:flex ${
             isNotificationsActive ? 'font-bold' : ''
           }`}
         >
-            Apply
+            Client
         </span>
       </Link>
       <Link

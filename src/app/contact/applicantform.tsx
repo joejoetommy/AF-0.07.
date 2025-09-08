@@ -191,371 +191,362 @@ const handleSubmit = async (
 
   return (
     <>
-      <div className="bg-black text-white min-h-screen py-10">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          {/* Toggle */}
-          <div className="flex justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => setFormType("A")}
-              className={`rounded-md px-4 py-2 text-sm font-medium ${
-                formType === "A"
-                  ? "bg-green-500 px-4 py-3 text-black font-bold"
-                  : "bg-neutral-900 text-green-500"
-              }`}
-            >
-              Option A (Quick Apply)
-            </button>
-            <button
-              type="button"
-              onClick={() => setFormType("B")}
-              className={`rounded-md px-4 py-2 text-sm font-medium ${
-                formType === "B"
-                  ? "bg-green-500 px-4 py-3 text-black font-bold"
-                  : "bg-neutral-900 text-green-500"
-              }`}
-            >
-              Option B (Full Application)
-            </button>
-          </div>
-
-          <Formik<FormValues>
-            enableReinitialize
-            initialValues={{ ...initialValues, formType }}
-            validationSchema={toFormikValidationSchema(unionSchema)}
-            onSubmit={handleSubmit}
+    <div className="bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 border-t dark:border-zinc-800 border-zinc-200 shadow-lg min-h-screen py-10">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        {/* Toggle */}
+        <div className="flex justify-center gap-2">
+          <button
+            type="button"
+            onClick={() => setFormType("A")}
+            className={`rounded-md px-4 py-2 text-sm font-medium transition ${
+              formType === "A"
+                ? "bg-green-500 px-4 py-3 text-black font-bold"
+                : "bg-zinc-200 text-green-700 hover:bg-zinc-300 dark:bg-zinc-900 dark:text-green-400 dark:hover:bg-zinc-800"
+            }`}
           >
-            {({ setFieldValue, values }) => (
-              <Form className="mt-8 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
-                {/* Common: First + Last */}
-                <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium">
-                    First Name *
-                  </label>
-                  <div className="mt-1">
-                    <Field
-                      id="firstName"
-                      name="firstName"
-                      className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                    />
-                  </div>
-                  <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium">
-                    Surname *
-                  </label>
-                  <div className="mt-1">
-                    <Field
-                      id="lastName"
-                      name="lastName"
-                      className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                    />
-                  </div>
-                  <ErrorMessage name="lastName" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                {/* Option A UI */}
-                {values.formType === "A" && (
-                  <>
-                    <div className="sm:col-span-2">
-                      <label className="block text-sm font-medium">Applicant CV *</label>
-                      <div className="mt-2">
-                        <input
-                          type="file"
-                          accept=".pdf,.doc,.docx,.txt"
-                          onChange={(e) => setFieldValue("cvFile", e.currentTarget.files?.[0] ?? null)}
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                      <ErrorMessage name="cvFile" component="div" className="text-red-500 text-sm mt-1" />
-                    </div>
-                  </>
-                )}
-
-                {/* Option B UI */}
-                {values.formType === "B" && (
-                  <>
-                    <div className="sm:col-span-2">
-                      <label htmlFor="address" className="block text-sm font-medium">
-                        Address *
-                      </label>
-                      <div className="mt-1">
-                        <Field
-                          id="address"
-                          name="address"
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                      <ErrorMessage name="address" component="div" className="text-red-500 text-sm mt-1" />
-                    </div>
-
-                    <div>
-                      <label htmlFor="postcode" className="block text-sm font-medium">
-                        Postcode / Eircode
-                      </label>
-                      <div className="mt-1">
-                        <Field
-                          id="postcode"
-                          name="postcode"
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="mobile" className="block text-sm font-medium">
-                        Mobile *
-                      </label>
-                      <div className="mt-1">
-                        <Field
-                          id="mobile"
-                          name="mobile"
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                      <ErrorMessage name="mobile" component="div" className="text-red-500 text-sm mt-1" />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label htmlFor="email" className="block text-sm font-medium">
-                        Email *
-                      </label>
-                      <div className="mt-1">
-                        <Field
-                          type="email"
-                          id="email"
-                          name="email"
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                      <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label htmlFor="hearAbout" className="block text-sm font-medium">
-                        How did you hear about us
-                      </label>
-                      <div className="mt-1">
-                        <Field
-                          id="hearAbout"
-                          name="hearAbout"
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label htmlFor="idealJob" className="block text-sm font-medium">
-                        Describe what type of job you think would be ideal for you
-                      </label>
-                      <div className="mt-1">
-                        <Field
-                          as="textarea"
-                          id="idealJob"
-                          name="idealJob"
-                          rows={4}
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label htmlFor="qualifications" className="block text-sm font-medium">
-                        Certificates / courses / qualifications (title &amp; dates)
-                      </label>
-                      <div className="mt-1">
-                        <Field
-                          as="textarea"
-                          id="qualifications"
-                          name="qualifications"
-                          rows={4}
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className="block text-sm font-medium">
-                        Do you hold a full driving licence?
-                      </span>
-                      <div className="mt-2 flex gap-4">
-                        <label className="inline-flex items-center gap-2">
-                          <Field type="radio" name="drivingLicence" value="yes" />
-                          <span>Yes</span>
-                        </label>
-                        <label className="inline-flex items-center gap-2">
-                          <Field type="radio" name="drivingLicence" value="no" />
-                          <span>No</span>
-                        </label>
-                      </div>
-                      <ErrorMessage name="drivingLicence" component="div" className="text-red-500 text-sm mt-1" />
-                    </div>
-
-                    <div>
-                      <span className="block text-sm font-medium">
-                        Have you ever applied to Farm Solutions previously?
-                      </span>
-                      <div className="mt-2 flex gap-4">
-                        <label className="inline-flex items-center gap-2">
-                          <Field type="radio" name="appliedBefore" value="yes" />
-                          <span>Yes</span>
-                        </label>
-                        <label className="inline-flex items-center gap-2">
-                          <Field type="radio" name="appliedBefore" value="no" />
-                          <span>No</span>
-                        </label>
-                      </div>
-                      <ErrorMessage name="appliedBefore" component="div" className="text-red-500 text-sm mt-1" />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label htmlFor="otherInfo" className="block text-sm font-medium">
-                        Any other information you wish to add
-                      </label>
-                      <div className="mt-1">
-                        <Field
-                          as="textarea"
-                          id="otherInfo"
-                          name="otherInfo"
-                          rows={4}
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Work History with FieldArray */}
-                    <div className="sm:col-span-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Work History</span>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setFieldValue("workHistory", [
-                              ...values.workHistory,
-                              {
-                                startDate: "",
-                                endDate: "",
-                                company: "",
-                                farmDescription: "",
-                                roleDescription: "",
-                              },
-                            ])
-                          }
-                          className="rounded-md bg-neutral-900 px-3 py-1 text-sm hover:bg-neutral-800"
-                        >
-                          Add new
-                        </button>
-                      </div>
-
-                      <FieldArray name="workHistory">
-                        {({ remove }) => (
-                          <div className="mt-3 space-y-6">
-                            {values.workHistory.map((_, idx) => (
-                              <div
-                                key={idx}
-                                className="rounded-lg border border-neutral-800 p-4"
-                              >
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                  <div>
-                                    <label className="block text-sm">Start Date</label>
-                                    <Field
-                                      name={`workHistory.${idx}.startDate`}
-                                      type="date"
-                                      className="mt-1 block w-full rounded-md border border-neutral-800 bg-black px-3 py-2 text-white"
-                                    />
-                                    <ErrorMessage
-                                      name={`workHistory.${idx}.startDate`}
-                                      component="div"
-                                      className="text-red-500 text-sm mt-1"
-                                    />
-                                  </div>
-                                  <div>
-                                    <label className="block text-sm">End Date</label>
-                                    <Field
-                                      name={`workHistory.${idx}.endDate`}
-                                      type="date"
-                                      className="mt-1 block w-full rounded-md border border-neutral-800 bg-black px-3 py-2 text-white"
-                                    />
-                                  </div>
-                                  <div className="sm:col-span-2">
-                                    <label className="block text-sm">Farmer / Company</label>
-                                    <Field
-                                      name={`workHistory.${idx}.company`}
-                                      className="mt-1 block w-full rounded-md border border-neutral-800 bg-black px-3 py-2 text-white"
-                                    />
-                                    <ErrorMessage
-                                      name={`workHistory.${idx}.company`}
-                                      component="div"
-                                      className="text-red-500 text-sm mt-1"
-                                    />
-                                  </div>
-                                  <div className="sm:col-span-2">
-                                    <label className="block text-sm">Farm Description</label>
-                                    <Field
-                                      as="textarea"
-                                      rows={3}
-                                      name={`workHistory.${idx}.farmDescription`}
-                                      className="mt-1 block w-full rounded-md border border-neutral-800 bg-black px-3 py-2 text-white"
-                                    />
-                                  </div>
-                                  <div className="sm:col-span-2">
-                                    <label className="block text-sm">Description of your role</label>
-                                    <Field
-                                      as="textarea"
-                                      rows={3}
-                                      name={`workHistory.${idx}.roleDescription`}
-                                      className="mt-1 block w-full rounded-md border border-neutral-800 bg-black px-3 py-2 text-white"
-                                    />
-                                  </div>
-                                </div>
-
-                                <div className="mt-3 flex justify-end">
-                                  <button
-                                    type="button"
-                                    onClick={() => remove(idx)}
-                                    className="rounded-md bg-neutral-900 px-3 py-1 text-sm hover:bg-neutral-800"
-                                  >
-                                    Remove
-                                  </button>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </FieldArray>
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label className="block text-sm font-medium">Applicant CV</label>
-                      <div className="mt-2">
-                        <input
-                          type="file"
-                          accept=".pdf,.doc,.docx,.txt"
-                          onChange={(e) => setFieldValue("cvFileB", e.currentTarget.files?.[0] ?? null)}
-                          className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white"
-                        />
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {/* Submit */}
-                <div className="sm:col-span-2 flex justify-center">
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="mt-2 w-45 rounded-md bg-green-500 px-4 py-3 text-black font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-70"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
+            Option A (Quick Apply)
+          </button>
+          <button
+            type="button"
+            onClick={() => setFormType("B")}
+            className={`rounded-md px-4 py-2 text-sm font-medium transition ${
+              formType === "B"
+                ? "bg-green-500 px-4 py-3 text-black font-bold"
+                : "bg-zinc-200 text-green-700 hover:bg-zinc-300 dark:bg-zinc-900 dark:text-green-400 dark:hover:bg-zinc-800"
+            }`}
+          >
+            Option B (Full Application)
+          </button>
         </div>
+
+        <Formik<FormValues>
+          enableReinitialize
+          initialValues={{ ...initialValues, formType }}
+          validationSchema={toFormikValidationSchema(unionSchema)}
+          onSubmit={handleSubmit}
+        >
+          {({ setFieldValue, values, isSubmitting }) => (
+            <Form className="mt-8 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+              {/* First + Last */}
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium">
+                  First Name *
+                </label>
+                <div className="mt-1">
+                  <Field
+                    id="firstName"
+                    name="firstName"
+                    className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+                  />
+                </div>
+                <ErrorMessage name="firstName" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium">
+                  Surname *
+                </label>
+                <div className="mt-1">
+                  <Field
+                    id="lastName"
+                    name="lastName"
+                    className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+                  />
+                </div>
+                <ErrorMessage name="lastName" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+              </div>
+
+              {/* Option A */}
+              {values.formType === "A" && (
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-medium">Applicant CV *</label>
+                  <div className="mt-2">
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.txt"
+                      onChange={(e) => setFieldValue("cvFile", e.currentTarget.files?.[0] ?? null)}
+                      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 file:mr-3 file:rounded file:border-0 file:bg-zinc-200 file:px-3 file:py-2 file:text-sm file:font-medium hover:file:bg-zinc-300 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:file:bg-zinc-800 dark:hover:file:bg-zinc-700"
+                    />
+                  </div>
+                  <ErrorMessage name="cvFile" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+                </div>
+              )}
+
+              {/* Option B */}
+              {values.formType === "B" && (
+                <>
+                  {/* ... keep rest of B fields (address, mobile, email, work history, etc.) with same pattern:
+                        border-zinc-300 bg-white text-zinc-900 in light mode,
+                        dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 in dark mode,
+                        and errors with text-red-600 dark:text-red-400
+                  */}
+<div className="sm:col-span-2">
+  <label htmlFor="address" className="block text-sm font-medium">
+    Address *
+  </label>
+  <div className="mt-1">
+    <Field
+      id="address"
+      name="address"
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+    />
+  </div>
+  <ErrorMessage name="address" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+</div>
+
+<div>
+  <label htmlFor="postcode" className="block text-sm font-medium">
+    Postcode / Eircode
+  </label>
+  <div className="mt-1">
+    <Field
+      id="postcode"
+      name="postcode"
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+    />
+  </div>
+</div>
+
+<div>
+  <label htmlFor="mobile" className="block text-sm font-medium">
+    Mobile *
+  </label>
+  <div className="mt-1">
+    <Field
+      id="mobile"
+      name="mobile"
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+    />
+  </div>
+  <ErrorMessage name="mobile" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+</div>
+
+<div className="sm:col-span-2">
+  <label htmlFor="email" className="block text-sm font-medium">
+    Email *
+  </label>
+  <div className="mt-1">
+    <Field
+      type="email"
+      id="email"
+      name="email"
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+    />
+  </div>
+  <ErrorMessage name="email" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+</div>
+
+<div className="sm:col-span-2">
+  <label htmlFor="hearAbout" className="block text-sm font-medium">
+    How did you hear about us
+  </label>
+  <div className="mt-1">
+    <Field
+      id="hearAbout"
+      name="hearAbout"
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+    />
+  </div>
+</div>
+
+<div className="sm:col-span-2">
+  <label htmlFor="idealJob" className="block text-sm font-medium">
+    Describe what type of job you think would be ideal for you
+  </label>
+  <div className="mt-1">
+    <Field
+      as="textarea"
+      id="idealJob"
+      name="idealJob"
+      rows={4}
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+    />
+  </div>
+</div>
+
+<div className="sm:col-span-2">
+  <label htmlFor="qualifications" className="block text-sm font-medium">
+    Certificates / courses / qualifications (title &amp; dates)
+  </label>
+  <div className="mt-1">
+    <Field
+      as="textarea"
+      id="qualifications"
+      name="qualifications"
+      rows={4}
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+    />
+  </div>
+</div>
+
+<div>
+  <span className="block text-sm font-medium">Do you hold a full driving licence?</span>
+  <div className="mt-2 flex gap-4">
+    <label className="inline-flex items-center gap-2">
+      <Field type="radio" name="drivingLicence" value="yes" className="accent-green-600 dark:accent-green-500" />
+      <span>Yes</span>
+    </label>
+    <label className="inline-flex items-center gap-2">
+      <Field type="radio" name="drivingLicence" value="no" className="accent-green-600 dark:accent-green-500" />
+      <span>No</span>
+    </label>
+  </div>
+  <ErrorMessage name="drivingLicence" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+</div>
+
+<div>
+  <span className="block text-sm font-medium">Have you ever applied to Farm Solutions previously?</span>
+  <div className="mt-2 flex gap-4">
+    <label className="inline-flex items-center gap-2">
+      <Field type="radio" name="appliedBefore" value="yes" className="accent-green-600 dark:accent-green-500" />
+      <span>Yes</span>
+    </label>
+    <label className="inline-flex items-center gap-2">
+      <Field type="radio" name="appliedBefore" value="no" className="accent-green-600 dark:accent-green-500" />
+      <span>No</span>
+    </label>
+  </div>
+  <ErrorMessage name="appliedBefore" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+</div>
+
+<div className="sm:col-span-2">
+  <label htmlFor="otherInfo" className="block text-sm font-medium">
+    Any other information you wish to add
+  </label>
+  <div className="mt-1">
+    <Field
+      as="textarea"
+      id="otherInfo"
+      name="otherInfo"
+      rows={4}
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+    />
+  </div>
+</div>
+
+{/* Work History with FieldArray */}
+<div className="sm:col-span-2">
+  <div className="flex items-center justify-between">
+    <span className="text-sm font-medium">Work History</span>
+    <button
+      type="button"
+      onClick={() =>
+        setFieldValue("workHistory", [
+          ...values.workHistory,
+          { startDate: "", endDate: "", company: "", farmDescription: "", roleDescription: "" },
+        ])
+      }
+      className="rounded-md bg-zinc-200 px-3 py-1 text-sm text-zinc-900 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+    >
+      Add new
+    </button>
+  </div>
+
+  <FieldArray name="workHistory">
+    {({ remove }) => (
+      <div className="mt-3 space-y-6">
+        {values.workHistory.map((_, idx) => (
+          <div key={idx} className="rounded-lg border border-zinc-300 p-4 dark:border-zinc-700">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-sm">Start Date</label>
+                <Field
+                  name={`workHistory.${idx}.startDate`}
+                  type="date"
+                  className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                />
+                <ErrorMessage
+                  name={`workHistory.${idx}.startDate`}
+                  component="div"
+                  className="text-red-600 dark:text-red-400 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm">End Date</label>
+                <Field
+                  name={`workHistory.${idx}.endDate`}
+                  type="date"
+                  className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm">Farmer / Company</label>
+                <Field
+                  name={`workHistory.${idx}.company`}
+                  className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                />
+                <ErrorMessage
+                  name={`workHistory.${idx}.company`}
+                  component="div"
+                  className="text-red-600 dark:text-red-400 text-sm mt-1"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm">Farm Description</label>
+                <Field
+                  as="textarea"
+                  rows={3}
+                  name={`workHistory.${idx}.farmDescription`}
+                  className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm">Description of your role</label>
+                <Field
+                  as="textarea"
+                  rows={3}
+                  name={`workHistory.${idx}.roleDescription`}
+                  className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                />
+              </div>
+            </div>
+
+            <div className="mt-3 flex justify-end">
+              <button
+                type="button"
+                onClick={() => remove(idx)}
+                className="rounded-md bg-zinc-200 px-3 py-1 text-sm text-zinc-900 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
+    )}
+  </FieldArray>
+</div>
+
+<div className="sm:col-span-2">
+  <label className="block text-sm font-medium">Applicant CV</label>
+  <div className="mt-2">
+    <input
+      type="file"
+      accept=".pdf,.doc,.docx,.txt"
+      onChange={(e) => setFieldValue("cvFileB", e.currentTarget.files?.[0] ?? null)}
+      className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 file:mr-3 file:rounded file:border-0 file:bg-zinc-200 file:px-3 file:py-2 file:text-sm file:font-medium hover:file:bg-zinc-300 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:file:bg-zinc-800 dark:hover:file:bg-zinc-700"
+    />
+  </div>
+</div>
+
+                </>
+              )}
+
+              {/* Submit */}
+              <div className="sm:col-span-2 flex justify-center">
+                <button
+                  type="submit"
+                  disabled={isLoading || isSubmitting}
+                  className="mt-2 w-45 rounded-md bg-green-500 px-4 py-3 text-black font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-zinc-100 dark:focus:ring-offset-zinc-950 disabled:opacity-70"
+                >
+                  Submit
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </div>
 
       <ToastContainer
         position="top-center"

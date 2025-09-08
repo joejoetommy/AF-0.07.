@@ -14,11 +14,12 @@ const MessagesPage = () => {
 
 <InformationPacks/>
 
-<div className="mb-50">
+<div className="">
+
   <ContactForm  />
 </div>
 
-      <Separator/>
+      <Separator className="border-top border-grey-300"/>
       <FooterSection />
     </div>
   );

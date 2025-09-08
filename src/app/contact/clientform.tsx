@@ -76,216 +76,216 @@ const ClientForm = () => {
 
   return (
     <>
-      <div className="bg-black text-white min-h-screen py-10">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Formik<FormValues>
-            initialValues={{
-              firstName: "",
-              lastName: "",
-              address: "",
-              postcode: "",
-              mobile: "",
-              email: "",
-              farmType: "Diary",
-              workerType: "Diary Farm assistant",
-              vacancyDescription: "",
-              hearAbout: "",
-              bestTime: "",
-            }}
-            validationSchema={toFormikValidationSchema(clientValidationSchema)}
-            onSubmit={handleSubmit}
-          >
-            <Form className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
-              {/* First name */}
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium">
-                  First Name *
-                </label>
-                <div className="mt-1">
-                  <Field
-                    id="firstName"
-                    name="firstName"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-                <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
+  <div className="bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen py-10">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Formik<FormValues>
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          address: "",
+          postcode: "",
+          mobile: "",
+          email: "",
+          farmType: "Diary",
+          workerType: "Diary Farm assistant",
+          vacancyDescription: "",
+          hearAbout: "",
+          bestTime: "",
+        }}
+        validationSchema={toFormikValidationSchema(clientValidationSchema)}
+        onSubmit={handleSubmit}
+      >
+        <Form className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+          {/* First name */}
+          <div>
+            <label htmlFor="firstName" className="block text-sm font-medium">
+              First Name *
+            </label>
+            <div className="mt-1">
+              <Field
+                id="firstName"
+                name="firstName"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+            <ErrorMessage name="firstName" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+          </div>
 
-              {/* Surname */}
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium">
-                  Surname *
-                </label>
-                <div className="mt-1">
-                  <Field
-                    id="lastName"
-                    name="lastName"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-                <ErrorMessage name="lastName" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
+          {/* Surname */}
+          <div>
+            <label htmlFor="lastName" className="block text-sm font-medium">
+              Surname *
+            </label>
+            <div className="mt-1">
+              <Field
+                id="lastName"
+                name="lastName"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+            <ErrorMessage name="lastName" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+          </div>
 
-              {/* Address */}
-              <div className="sm:col-span-2">
-                <label htmlFor="address" className="block text-sm font-medium">
-                  Address *
-                </label>
-                <div className="mt-1">
-                  <Field
-                    id="address"
-                    name="address"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-                <ErrorMessage name="address" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
+          {/* Address */}
+          <div className="sm:col-span-2">
+            <label htmlFor="address" className="block text-sm font-medium">
+              Address *
+            </label>
+            <div className="mt-1">
+              <Field
+                id="address"
+                name="address"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+            <ErrorMessage name="address" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+          </div>
 
-              {/* Postcode / Eircode */}
-              <div>
-                <label htmlFor="postcode" className="block text-sm font-medium">
-                  Postcode / Eircode
-                </label>
-                <div className="mt-1">
-                  <Field
-                    id="postcode"
-                    name="postcode"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-              </div>
+          {/* Postcode / Eircode */}
+          <div>
+            <label htmlFor="postcode" className="block text-sm font-medium">
+              Postcode / Eircode
+            </label>
+            <div className="mt-1">
+              <Field
+                id="postcode"
+                name="postcode"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+          </div>
 
-              {/* Mobile */}
-              <div>
-                <label htmlFor="mobile" className="block text-sm font-medium">
-                  Mobile *
-                </label>
-                <div className="mt-1">
-                  <Field
-                    id="mobile"
-                    name="mobile"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-                <ErrorMessage name="mobile" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
+          {/* Mobile */}
+          <div>
+            <label htmlFor="mobile" className="block text-sm font-medium">
+              Mobile *
+            </label>
+            <div className="mt-1">
+              <Field
+                id="mobile"
+                name="mobile"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+            <ErrorMessage name="mobile" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+          </div>
 
-              {/* Email */}
-              <div className="sm:col-span-2">
-                <label htmlFor="email" className="block text-sm font-medium">
-                  Email *
-                </label>
-                <div className="mt-1">
-                  <Field
-                    type="email"
-                    id="email"
-                    name="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
+          {/* Email */}
+          <div className="sm:col-span-2">
+            <label htmlFor="email" className="block text-sm font-medium">
+              Email *
+            </label>
+            <div className="mt-1">
+              <Field
+                type="email"
+                id="email"
+                name="email"
+                autoComplete="email"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+            <ErrorMessage name="email" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+          </div>
 
-              {/* Farm type */}
-              <div>
-                <label htmlFor="farmType" className="block text-sm font-medium">
-                  Farm type
-                </label>
-                <div className="mt-1">
-                  <Field
-                    as="select"
-                    id="farmType"
-                    name="farmType"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                  >
-                    <option value="Diary">Dairy</option>
-                    <option value="Other">Other</option>
-                  </Field>
-                </div>
-                <ErrorMessage name="farmType" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
+          {/* Farm type */}
+          <div>
+            <label htmlFor="farmType" className="block text-sm font-medium">
+              Farm type
+            </label>
+            <div className="mt-1">
+              <Field
+                as="select"
+                id="farmType"
+                name="farmType"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              >
+                <option value="Diary">Dairy</option>
+                <option value="Other">Other</option>
+              </Field>
+            </div>
+            <ErrorMessage name="farmType" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+          </div>
 
-              {/* Worker type */}
-              <div>
-                <label htmlFor="workerType" className="block text-sm font-medium">
-                  Worker type
-                </label>
-                <div className="mt-1">
-                  <Field
-                    as="select"
-                    id="workerType"
-                    name="workerType"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white focus:outline-none"
-                  >
-                    <option value="Diary Farm assistant">Dairy Farm Assistant</option>
-                    <option value="Other">Other</option>
-                  </Field>
-                </div>
-                <ErrorMessage name="workerType" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
+          {/* Worker type */}
+          <div>
+            <label htmlFor="workerType" className="block text-sm font-medium">
+              Worker type
+            </label>
+            <div className="mt-1">
+              <Field
+                as="select"
+                id="workerType"
+                name="workerType"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              >
+                <option value="Diary Farm assistant">Dairy Farm Assistant</option>
+                <option value="Other">Other</option>
+              </Field>
+            </div>
+            <ErrorMessage name="workerType" component="div" className="text-red-600 dark:text-red-400 text-sm mt-1" />
+          </div>
 
-              {/* Vacancy Description */}
-              <div className="sm:col-span-2">
-                <label htmlFor="vacancyDescription" className="block text-sm font-medium">
-                  Vacancy Description
-                </label>
-                <div className="mt-1">
-                  <Field
-                    as="textarea"
-                    id="vacancyDescription"
-                    name="vacancyDescription"
-                    rows={6}
-                    placeholder="Please describe the position you're looking to fill..."
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-              </div>
+          {/* Vacancy Description */}
+          <div className="sm:col-span-2">
+            <label htmlFor="vacancyDescription" className="block text-sm font-medium">
+              Vacancy Description
+            </label>
+            <div className="mt-1">
+              <Field
+                as="textarea"
+                id="vacancyDescription"
+                name="vacancyDescription"
+                rows={6}
+                placeholder="Please describe the position you're looking to fill..."
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+          </div>
 
-              {/* How you heard */}
-              <div>
-                <label htmlFor="hearAbout" className="block text-sm font-medium">
-                  How you heard about us
-                </label>
-                <div className="mt-1">
-                  <Field
-                    id="hearAbout"
-                    name="hearAbout"
-                    placeholder="e.g. Google, referral, etc."
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-              </div>
+          {/* How you heard */}
+          <div>
+            <label htmlFor="hearAbout" className="block text-sm font-medium">
+              How you heard about us
+            </label>
+            <div className="mt-1">
+              <Field
+                id="hearAbout"
+                name="hearAbout"
+                placeholder="e.g. Google, referral, etc."
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+          </div>
 
-              {/* Best time to talk */}
-              <div>
-                <label htmlFor="bestTime" className="block text-sm font-medium">
-                  Best time to talk
-                </label>
-                <div className="mt-1">
-                  <Field
-                    id="bestTime"
-                    name="bestTime"
-                    placeholder="e.g. Weekdays 9–11am"
-                    className="block w-full rounded-md border border-neutral-800 bg-black px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                  />
-                </div>
-              </div>
+          {/* Best time to talk */}
+          <div>
+            <label htmlFor="bestTime" className="block text-sm font-medium">
+              Best time to talk
+            </label>
+            <div className="mt-1">
+              <Field
+                id="bestTime"
+                name="bestTime"
+                placeholder="e.g. Weekdays 9–11am"
+                className="block w-full rounded-md border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-400"
+              />
+            </div>
+          </div>
 
-              {/* Submit */}
-              <div className="sm:col-span-2 flex justify-center">
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="mt-2 rounded-md bg-green-500 px-4 py-3 text-black font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-70"
-                >
-                  {isLoading ? "Sending..." : "Submit"}
-                </button>
-              </div>
-            </Form>
-          </Formik>
-        </div>
-      </div>
+          {/* Submit */}
+          <div className="sm:col-span-2 flex justify-center">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="mt-2 rounded-md bg-green-500 px-4 py-3 text-black font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-zinc-100 dark:focus:ring-offset-zinc-950 disabled:opacity-70"
+            >
+              {isLoading ? "Sending..." : "Submit"}
+            </button>
+          </div>
+        </Form>
+      </Formik>
+    </div>
+  </div>
 
       <ToastContainer
         position="top-center"

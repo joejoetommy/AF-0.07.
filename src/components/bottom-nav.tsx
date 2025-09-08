@@ -36,20 +36,20 @@ const BottomNav = () => {
           {isHomeActive && <Dot />}
         </Link>
 
-        <Link href="/about" className="flex items-center relative" aria-current={isExploreActive ? 'page' : undefined}>
+        <Link href="/candidate" className="flex items-center relative" aria-current={isExploreActive ? 'page' : undefined}>
           {isExploreActive ? (
-            <Icon icon="uil:search" width="32" height="32" className="stroke-current stroke-5" />
+            <Icon icon="pepicons-pencil:cv-circle-filled" width="32" height="32" className="stroke-current stroke-5" />
           ) : (
-            <Icon icon="uil:search" width="32" height="32" />
+            <Icon icon="pepicons-print:cv" width="32" height="32" />
           )}
           {isExploreActive && <Dot />}
         </Link>
 
-        <Link href="/apply" className="flex items-center relative" aria-current={isNotificationsActive ? 'page' : undefined}>
+        <Link href="/client" className="flex items-center relative" aria-current={isNotificationsActive ? 'page' : undefined}>
           {isNotificationsActive ? (
-            <Icon icon="ph:plus-fill" width="32" height="32" />
+            <Icon icon="streamline-ultimate:human-resources-businessman-bold" width="32" height="32" />
           ) : (
-            <Icon icon="rivet-icons:plus" width="32" height="32" />
+            <Icon icon="streamline-ultimate:human-resources-businessman" width="32" height="32" />
           )}
           {isNotificationsActive && <Dot />}
         </Link>
