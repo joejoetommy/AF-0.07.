@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Separator } from '@/components/core/separator';
 import ClientForm from "@/app/contact/clientform";
 import FooterSection from '@/components/core/footer';
-
+import InformationPacks from '@/components/core/infoclient';
 
 const NotificationsPage = () => {
 
@@ -13,6 +13,7 @@ const NotificationsPage = () => {
             <div className="flex flex-col pt-4 sm:ml-[120px] md:ml-[250px] sm:border-r sm:border-zinc-700 pb-20 min-h-screen">
               <span className="px-8  pb-5 mt-10 font-bold text-3xl">Apply as a Client</span>
                       <Separator/>
+                      <InformationPacks/>
                     <div className="">
                    <ClientForm />
                     </div>

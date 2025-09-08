@@ -24,6 +24,7 @@ import {
 
 const profileData = {
   backgroundImage: '/cow.jpg', // must be inside /public
+   backgroundTitle: '/title.jpg',
   profileImage: '/cowprofile.jpg', // must be inside /public
   username: 'AgriForce',
   title: 'Developing the Agricultural workforce of tomorrow',
@@ -58,25 +59,28 @@ const Profile: React.FC = () => {
             onLoad={() => setBackgroundLoaded(true)}
           />
 
-          <div className="absolute right-0 pr-6 transform bottom-[-64px]">
-            <div className="border-4 border-white rounded-full w-32 h-32 overflow-hidden relative">
-              {/* Profile Image Skeleton */}
-              {!profileLoaded && (
-                <Skeleton className="absolute inset-0 rounded-full w-full h-full" />
-              )}
-              
-              <Image
-                src={profileData.profileImage}
-                alt="Profile"
-                width={128}
-                height={128}
-                className={`w-32 h-32 object-cover transition-opacity duration-500 ${
-                  profileLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-                onLoad={() => setProfileLoaded(true)}
-              />
-            </div>
-          </div>
+<div className="absolute right-0 pr-6 transform bottom-[-64px] z-20"> 
+  <div className="border-4 border-white rounded-full w-32 h-32 overflow-hidden relative">
+    {/* Profile Image Skeleton */}
+    {!profileLoaded && (
+      <Skeleton className="absolute inset-0 rounded-full w-full h-full" />
+    )}
+    
+    <Image
+      src={profileData.profileImage}
+      alt="Profile"
+      width={128}
+      height={128}
+      className={`w-32 h-32 object-cover transition-opacity duration-500 ${
+        profileLoaded ? 'opacity-100' : 'opacity-0'
+      }`}
+      onLoad={() => setProfileLoaded(true)}
+    />
+  </div>
+</div>
+
+
+
         </div>
       </div>
 
@@ -89,54 +93,24 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
-      <div className="relative mt-8 px-6 sm:px-12 lg:px-16">
-     
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gray-900/10" />
+<div className="relative mt-1 px-1 sm:px-2 lg:px-3">
+  <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gray-900/10" />
 
-        <div className="relative mx-auto max-w-3xl flex flex-col items-center text-center py-8">
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            <TextRoll>Agri Force</TextRoll>
-          </h2>
-          {/* <p className="mt-3 text-xl text-white">{profileData.bio}</p> */}
-                  {/* <h2 className="text-xs font-semibold uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
-          Agri Force
-        </h2>
-        <p className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
-          The Employment you need
-        </p>
-        <p className="mx-auto mt-5 max-w-prose text-xl text-zinc-700 dark:text-zinc-300">
-          Bridging the gap between dedicated dairy farmers and skilled professionals
-        </p> */}
-
-          <Dialog>
-            <form>
-              {/* <DialogTrigger asChild>
-                <Button className="mt-6 px-10 py-2" variant="outline">
-                  Our Story
-                </Button>
-              </DialogTrigger> */}
-
-              <DialogContent className="bg-black sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Agri-Force</DialogTitle>
-                </DialogHeader>
-
-                <div className="grid gap-4">
-                  <div className="grid gap-3">
-                    <p className="mt-1 text-xl text-white">{profileData.bio}</p>
-                  </div>
-                </div>
-
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="outline">Exit</Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </form>
-          </Dialog>
-        </div>
-      </div>
+  <div className="relative mx-auto max-w-3xl flex flex-col items-center text-center py-1">
+    <div className="relative w-full h-48 z-10"> 
+      <Image
+        src={profileData.backgroundTitle}
+        alt="Background Image"
+        fill
+        className={`rounded object-contain transition-opacity duration-500 ${
+          backgroundLoaded ? 'opacity-100' : 'opacity-0'
+        }`}
+        priority
+        onLoad={() => setBackgroundLoaded(true)}
+      />
+    </div>
+  </div>
+</div>
 
 
       <div className="mt-1 mb-1">

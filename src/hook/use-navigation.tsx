@@ -21,10 +21,10 @@ const useNavigation = () => {
       case '/':
         setIsHomeActive(true);
         break;
-      case '/about':
+      case '/candidate':
         setIsExploreActive(true);
         break;
-      case '/apply':
+      case '/client':
         setIsNotificationsActive(true);
         break;
       case '/contact':

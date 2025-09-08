@@ -24,7 +24,7 @@ const SideNav = () => {
         className="flex bg-white/10 flex-row space-x-1 items-center hover:bg-white/30 p-4 rounded-full duration-200"
       >
                 <Image
-          src="/cow_contour_traced_fitted.svg"
+          src="/logo.jpg"
           alt="AgriForce Logo"
           width={65}
           height={65}

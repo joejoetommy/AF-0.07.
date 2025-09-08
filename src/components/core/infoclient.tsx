@@ -12,7 +12,7 @@ export default function InformationPacks() {
         Contact Us
       </p>
       <p className="mx-auto mt-5 max-w-prose text-xl text-zinc-700 dark:text-zinc-300">
-We’d love to hear from you! Whether you have a question about our services, pricing, need support, or anything else, our team is ready to answer all your questions. Fill out the form below and we’ll get back to you as soon as possible.
+Looking to hire a skilled dairy farm assistant? We’re here to help. Complete the application form below and our team will connect you with qualified candidates to meet your farming needs. Provide as much detail as possible so we can match you with the right support quickly and efficiently.
       </p>
     </div>
   </div>
