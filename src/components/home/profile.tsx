@@ -23,9 +23,10 @@ import {
 
 
 const profileData = {
-  backgroundImage: '/cow.jpg', // must be inside /public
+  backgroundImage: '/images/N13.png', // must be inside /public
    backgroundTitle: '/title.jpg',
-  profileImage: '/cowprofile.jpg', // must be inside /public
+  profileImage: '/images/N10.png', // must be inside /public
+  //    profileImage: '/cowprofile.jpg', 
   username: 'AgriForce',
   title: 'Developing the Agricultural workforce of tomorrow',
   mission:

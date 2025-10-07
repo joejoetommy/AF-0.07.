@@ -12,11 +12,11 @@ const transition = {
 
 // Images must exist in /public
 const ITEMS = [
-  { label: 'Irish', src: '/image5.jpg' },
-  { label: 'Workers',  src: '/image1.jpg' },
-  { label: 'Clients',   src: '/image2.jpg' },
-  { label: 'Diary',   src: '/image3.jpg' },
-  { label: 'Community',  src: '/image4.jpg' },
+  { label: 'Irish', src: '/images/Y5.png' },
+  { label: 'Workers',  src: '/images/Y3.png' },
+  { label: 'Clients',   src: '/images/Y6.png' },
+  { label: 'Diary',   src: '/images/Y2.png' },
+  { label: 'Community',  src: '/images/Y7.png' },
 ];
 
 const ITEM_SIZE = 200; // px

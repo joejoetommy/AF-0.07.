@@ -23,14 +23,22 @@ const SideNav = () => {
         href="/"
         className="flex bg-white/10 flex-row space-x-1 items-center hover:bg-white/30 p-4 rounded-full duration-200"
       >
-                <Image
+                {/* <Image
           src="/logo.jpg"
           alt="AgriForce Logo"
           width={65}
           height={65}
           priority
           className='bg-grey-300 pr-2'
-        />
+        /> */}
+<Image
+  src="/logo.jpg"
+  alt="AgriForce Logo"
+  width={65}
+  height={65}
+  priority
+  className="bg-gray-300 rounded-full object-cover pr-2"
+/>
               <span
           className={`
 
@@ -51,9 +59,9 @@ const SideNav = () => {
         }`}
       >
         {isHomeActive ? (
-          <Icon icon="mingcute:home-5-fill" width="38" height="38" />
+          <Icon icon="ph:barn-fill" width="38" height="38" />
         ) : (
-          <Icon icon="mingcute:home-5-line" width="38" height="38" />
+          <Icon icon="ph:barn-light" width="38" height="38" />
         )}
         <span
           className={`text-2xl pt-2 hidden md:flex ${

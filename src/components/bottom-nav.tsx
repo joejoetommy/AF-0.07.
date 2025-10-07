@@ -29,9 +29,9 @@ const BottomNav = () => {
 
         <Link href="/" className="flex items-center relative" aria-current={isHomeActive ? 'page' : undefined}>
           {isHomeActive ? (
-            <Icon icon="mingcute:home-5-fill" width="32" height="32" />
+            <Icon icon="ph:barn-fill" width="32" height="32" />
           ) : (
-            <Icon icon="mingcute:home-5-line" width="32" height="32" />
+            <Icon icon="ph:barn-light" width="32" height="32" />
           )}
           {isHomeActive && <Dot />}
         </Link>
