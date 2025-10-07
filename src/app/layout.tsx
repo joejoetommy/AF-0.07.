@@ -1,12 +1,12 @@
 import '../styles/globals.css';
 import "react-toastify/dist/ReactToastify.css";
 
-
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Analytics } from "@vercel/analytics/next";
 
 import BottomNav from '@/components/bottom-nav';
-import MaxWidthWrapper from '@/components/max-width-wrapper';
+import MaxWidthWrapper from '@/components/max-width-wrapper'; 
 import SideNav from '@/components/side-nav';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -14,8 +14,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'AgriForce',
   description: 'Generated to build the Agriculture Community',
-    icons:  '/favicon.ico',
-  
+  icons: '/favicon.ico',
 };
 
 export default function RootLayout({
@@ -33,6 +32,7 @@ export default function RootLayout({
           </div>
         </MaxWidthWrapper>
         <BottomNav />
+        <Analytics /> {/* <-- This enables Vercel Analytics */}
       </body>
     </html>
   );
