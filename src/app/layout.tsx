@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 
 import BottomNav from '@/components/bottom-nav';
 import MaxWidthWrapper from '@/components/max-width-wrapper'; 
